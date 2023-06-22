@@ -23,24 +23,7 @@ logstashPipeline:
     }
    }
    output { 
-    if "nginx" in [tags] {
-       elasticsearch {
-         hosts => [ "elasticsearch-master:9200" ]
-         index => "logstash_nginx_%{+YYYY.MM.dd}"
-        }
-    }
-    else if "phpfpm" in [tags] {
-       elasticsearch {
-         hosts => [ "elasticsearch-master:9200" ]
-         index => "logstash_phpfpm_%{+YYYY.MM.dd}"
-        }
-    }
-    else {
-       elasticsearch {
-         hosts => [ "elasticsearch-master:9200" ]
-         index => "logstash_default_%{+YYYY.MM.dd}"
-         }
-    } 
+       elasticsearch { hosts =>  "http://elasticsearch-master:9200"} 
    }
 
 # Allows you to add any pattern files in your custom pattern dir
@@ -293,9 +276,9 @@ service:
       targetPort: 8080
 
 ingress:
-  enabled: false
+  enabled: true
   annotations:
-    {}
+    kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   className: "nginx"
   pathtype: ImplementationSpecific

@@ -15,8 +15,8 @@ roles:
   remote_cluster_client: "true"
   ml: "true"
 
-replicas: 3
-minimumMasterNodes: 2
+replicas: 2
+minimumMasterNodes: 1
 
 esMajorVersion: ""
 
@@ -128,7 +128,7 @@ podSecurityPolicy:
       - emptyDir
 
 persistence:
-  enabled: true
+  enabled: false
   labels:
     # Add default labels for the volumeClaimTemplate of the StatefulSet
     enabled: false
@@ -167,7 +167,7 @@ antiAffinityTopologyKey: "kubernetes.io/hostname"
 
 # Hard means that by default pods will only be scheduled if there are enough nodes for them
 # and that they will never end up on the same node. Setting this to soft will do this "best effort"
-antiAffinity: "hard"
+antiAffinity: "soft"
 
 # This is the node affinity settings as defined in
 # https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#node-affinity-beta-feature
@@ -228,13 +228,13 @@ sysctlVmMaxMapCount: 262144
 
 readinessProbe:
   failureThreshold: 3
-  initialDelaySeconds: 10
+  initialDelaySeconds: 120
   periodSeconds: 10
   successThreshold: 3
   timeoutSeconds: 5
 
 # https://www.elastic.co/guide/en/elasticsearch/reference/7.17/cluster-health.html#request-params wait_for_status
-clusterHealthCheckParams: "wait_for_status=green&timeout=1s"
+clusterHealthCheckParams: "wait_for_status=green&timeout=50s"
 
 ## Use an alternate scheduler.
 ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
@@ -250,7 +250,7 @@ tolerations: []
 ingress:
   enabled: true
   annotations: 
-  kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
   className: "nginx"
   pathtype: ImplementationSpecific

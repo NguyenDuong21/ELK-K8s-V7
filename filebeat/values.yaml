@@ -31,25 +31,13 @@ daemonset:
       filebeat.inputs:
       - type: container
         paths:
-          - /u01/colombo/var/log/nginx/*.log
-        tags: ["nginx"]
+          - /var/log/containers/web3*.log
         processors:
         - add_kubernetes_metadata:
             host: ${NODE_NAME}
             matchers:
             - logs_path:
-                logs_path: "/u01/colombo/var/log/nginx/"
-      - type: container
-        paths:
-          - /u01/colombo/var/log/php-fpm/error*.log
-        tags: ["phpfpm"]
-        processors:
-        - add_kubernetes_metadata:
-            host: ${NODE_NAME}
-            matchers:
-            - logs_path:
-                logs_path: "/u01/colombo/var/log/php-fpm/"
-
+                logs_path: "/var/log/containers/"
       output.logstash:
         hosts: ["logstash-logstash:5044"]
   # Only used when updateStrategy is set to "RollingUpdate"

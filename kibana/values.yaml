@@ -138,8 +138,8 @@ ingress:
   enabled: true
   className: "nginx"
   pathtype: ImplementationSpecific
-  annotations: {}
-  kubernetes.io/ingress.class: nginx
+  annotations: 
+    ubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
   hosts:
     - host: kibana.vhv.com
